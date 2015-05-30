@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pixangular</title>
+  <title>The Barterist</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+<%= link_to "Register", signup_path %>
+|
+<%= link_to "Log in", login_path %>
+|
+<%= link_to "Log out", logout_path %>
+<p>
+<%= flash[:notice] || flash[:alert] %>
+<p>
 
 <%= yield %>
 
