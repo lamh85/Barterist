@@ -49,4 +49,6 @@ group :development, :test do
   gem "awesome_print"
 
   gem 'rename'
+
+  gem 'faker'
 end

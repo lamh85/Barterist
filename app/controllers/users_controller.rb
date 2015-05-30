@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:notice] = "You have successfully registered!"
-      redirect_to "/welcome/index"
+      redirect_to "/"
     end
   end
 
