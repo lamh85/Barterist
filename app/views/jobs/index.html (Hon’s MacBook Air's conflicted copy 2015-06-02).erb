@@ -12,9 +12,11 @@
     </div>
 
     <div class="col-md-6">
+      {{ foo = "hello world" }}
       <h2>{{jobsCtrl.jobs[jobsCtrl.selectedJob].title}}</h2>
-      <p>Created by {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.first_name}} {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.last_name}} on {{jobsCtrl.jobs[jobsCtrl.selectedJob].created_at.substring(0,10)}}</p>
-      <p>{{jobsCtrl.jobs[jobsCtrl.selectedJob].body}}</p>
+        <p>Created by {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.first_name}} {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.last_name}} on {{jobsCtrl.jobs[jobsCtrl.selectedJob].created_at.substring(0,10)}}</p>
+        <p>{{jobsCtrl.jobs[jobsCtrl.selectedJob].body}}</p>
+      <!-- <h2>{{jobsCtrl.jobs[jobsCtrl.selectedJob].title}}</h2> -->
     </div>
   <!-- </div> -->
 
