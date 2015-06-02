@@ -1,4 +1,4 @@
-<body ng-controller="JobsController as jobsCtrl">
+<div ng-controller="JobsController as jobsCtrl">
   <h1>Jobs</h1>
 
   <!-- <div class="col-md-12"> -->
@@ -15,12 +15,13 @@
       <h2>{{jobsCtrl.jobs[jobsCtrl.selectedJob].title}}</h2>
       <p>Created by {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.first_name}} {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.last_name}} on {{jobsCtrl.jobs[jobsCtrl.selectedJob].created_at.substring(0,10)}}</p>
       <p>{{jobsCtrl.jobs[jobsCtrl.selectedJob].body}}</p>
+
+      {{jobsCtrl.testObject}}
+
     </div>
-  <!-- </div> -->
 
+</div>
 
-<!--   <p>Created on {{job.created_at.substring(0,10)}}</p>
-  <p>Created by {{job.user.first_name}} {{job.user.last_name}}</p>
-  <p>{{job.body}}</p> -->
-
-</body>
+<div ng-controller="ReceiverController as receiver">
+  Hello global = 
+</div>
