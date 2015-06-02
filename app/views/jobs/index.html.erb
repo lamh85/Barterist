@@ -3,6 +3,8 @@
 
   <div ng-repeat="job in jobsCtrl.jobs">
   <h3>{{job.title}}</h3>
+  <p>Created on {{job.created_at.substring(0,10)}}</p>
+  <p>Created by {{job.user.first_name}} {{job.user.last_name}}</p>
   <p>{{job.body}}</p>
   </div>
 </body>

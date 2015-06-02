@@ -1,6 +1,6 @@
 json.array! @jobs do |job|
 
-  json.(job, :id, :title, :body)
+  json.(job, :id, :title, :body, :created_at)
 
   json.user do
     json.id job.user.id
