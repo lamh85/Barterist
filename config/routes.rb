@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :users
   resources :jobs
+  resources :comments, only: [:create]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

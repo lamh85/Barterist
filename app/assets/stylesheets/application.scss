@@ -14,3 +14,11 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.job-list-item{
+  cursor: pointer;
+}
+
+input, textarea {
+  width: 100%;
+}

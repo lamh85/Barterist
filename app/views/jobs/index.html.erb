@@ -4,7 +4,7 @@
   <!-- <div class="col-md-12"> -->
     <div class="col-md-6">
       <div ng-repeat="job in jobsCtrl.jobs">
-        <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )">{{job.title}} | Posted on {{job.created_at.substring(0,10)}}<p>
+        <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | Posted on {{job.created_at.substring(0,10)}}<p>
       </div>
     </div>
 
@@ -20,8 +20,16 @@
         <p>Submitted by {{comment.user.first_name}} {{comment.user.last_name}}
         <p>{{comment.body}}</p>
       </div>
-      Testing my new variable: {{jobsCtrl.selectedJobObject.title}}
 
+      <h3>Add a comment</h3>
+      
+      <%# myvar = {{jobsCtrl.selectedJobObject.id}} %>
+
+      <%= simple_form_for @comment do |f| %>
+        <%= f.input :body, label: false %>
+        <%= f.input "job_id", as: :hidden, input_html: {class: "hidden-field"} %>
+        <%= f.submit "Submit Comment!" %>
+      <% end %>
     </div>
 
 </div>
