@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
 
   def create
-    @comment = Comment.new(comment_params)
+    @comment = current_user.comments.new(comment_params)
     @comment.job_id = params[:comment][:job_id]
     byebug
     if @comment.save

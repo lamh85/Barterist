@@ -1,3 +1,5 @@
+var helloJobsJS = "hello";
+
 (function(){
 
   var app = angular.module("Barterist", []);
