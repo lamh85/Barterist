@@ -1,32 +1,27 @@
-var jobsGlobal = [];
-
 (function(){
   var app = angular.module("Barterist", []);
 
   app.controller("JobsController", ['$http', function($http) {
 
-    var jobsList = this;
-    jobsList.jobs = [];
+    // Store the value of "this" into a variable so it can be used in the $http.get function
+    var thisVar = this;
+
+    thisVar.jobs = [];
+    // This variable will contain the job selected via this.selectJob function
+    thisVar.selectedJobObject = {};
 
     $http.get('/jobs.json').success(function(data){
-      jobsList.jobs = data;
-      jobsGlobal = data;
+      thisVar.jobs = data;
+      // Set the default job object
+      thisVar.selectedJobObject = thisVar.jobs[0];
     }). // Success function
     error(function(data){
       console.log("Could not retreive JSON data!");
     });
 
-    console.log("jobsGlobal = " + jobsGlobal);
-
-    // The default job selected
-    this.selectedJob = 0;
-
-    // Find the job of above index
-    this.selectedJobObject = this.jobs[this.selectedJob];
-
     // Select the job via index number from the array
     this.selectJob = function(jobNumber) {
-      this.selectedJob = jobNumber;
+      thisVar.selectedJobObject = thisVar.jobs[jobNumber];
     };
 
     // A tester that checks if the inputted number is the currently selected job
@@ -34,14 +29,11 @@ var jobsGlobal = [];
       return this.selectJob === jobNumber;
     };
 
-    var fromJobs = "hello from Jobs Controller";
-
   }]); // Controller
 
   app.controller("ReceiverController", function() {
 
     this.checkpoint = "hello world";
-    // var receiverVar = JobsController.fromJobs;
 
   });
 

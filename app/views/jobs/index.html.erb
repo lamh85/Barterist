@@ -4,24 +4,24 @@
   <!-- <div class="col-md-12"> -->
     <div class="col-md-6">
       <div ng-repeat="job in jobsCtrl.jobs">
-        <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )">{{job.title}}<p>
-        <ul>
-          <li>Index # is {{jobsCtrl.jobs.indexOf(job)}}</li>
-        </ul>
+        <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )">{{job.title}} | Posted on {{job.created_at.substring(0,10)}}<p>
       </div>
     </div>
 
     <div class="col-md-6">
-      <h2>{{jobsCtrl.jobs[jobsCtrl.selectedJob].title}}</h2>
-      <p>Created by {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.first_name}} {{jobsCtrl.jobs[jobsCtrl.selectedJob].user.last_name}} on {{jobsCtrl.jobs[jobsCtrl.selectedJob].created_at.substring(0,10)}}</p>
-      <p>{{jobsCtrl.jobs[jobsCtrl.selectedJob].body}}</p>
+      <h2>{{jobsCtrl.selectedJobObject.title}}</h2>
+      <p>Created by {{jobsCtrl.selectedJobObject.user.first_name}} {{jobsCtrl.selectedJobObject.user.last_name}} on {{jobsCtrl.selectedJobObject.created_at.substring(0,10)}}</p>
+      <p>{{jobsCtrl.selectedJobObject.body}}</p>
 
-      {{jobsCtrl.testObject}}
+      <h3>Comments</h3>
+
+      <div ng-repeat="comment in jobsCtrl.selectedJobObject.comments">
+        <h4>{{comment.title}}</h4>
+        <p>Submitted by {{comment.user.first_name}} {{comment.user.last_name}}
+        <p>{{comment.body}}</p>
+      </div>
+      Testing my new variable: {{jobsCtrl.selectedJobObject.title}}
 
     </div>
 
-</div>
-
-<div ng-controller="ReceiverController as receiver">
-  Hello global = 
 </div>
