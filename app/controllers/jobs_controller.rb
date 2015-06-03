@@ -9,4 +9,10 @@ class JobsController < ApplicationController
       format.json
     end
   end
+
+  private
+
+  def job_params
+    params.require(:job).permit(:title, :body, :user_id)
+  end
 end
