@@ -1,5 +1,7 @@
 var helloJobsJS = "hello";
 
+// $( document ).ready(function() {
+
 (function(){
 
   var app = angular.module("Barterist", []);
@@ -36,10 +38,9 @@ var helloJobsJS = "hello";
 
   }]); // Controller
 
-  app.controller("ReceiverController", function() {
+})();  
 
-    this.checkpoint = "hello world";
+// });
 
-  });
-
-})();
+// (function(){
+// })();
