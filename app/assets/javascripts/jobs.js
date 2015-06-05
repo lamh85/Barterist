@@ -1,42 +1,20 @@
 var data;
+var jobIndex;
+// Make this variable global so it can be accessible outside of the Angular "app" variable
+var JobsCtrlGetJson;
 
-var getJobsJson = function(innerFunction, dataVar){
-  $.ajax({
-    url: "/jobs.json",
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    dataType: "json",
-    method: "get",
-    error: function() { console.log("Cannot GET AJAX file") },
-    success: function(data){
-      console.log("Get-JSON successful!");
-      dataVar = data;
-      innerFunction;
-    } 
-  });
-};
-
-// getJobsJson();
-
-var jobsCtrlGetJson;
-
-// (function(){
+(function(){
 
   var app = angular.module("Barterist", []);
 
   app.factory("CommonFunctions", function() {
     return {
-      hello: function() {
-        console.log("hello!!!");
-      },
-      goodbye: function() {
-        console.log("goodbye");
+      hello: function() { console.log("hello there111");
       }
     };
   });
 
   app.controller("JobsController", ['$http','CommonFunctions', function($http,CommonFunctions) {
-
-    CommonFunctions.hello();
 
     // Store the value of "this" into a variable so it can be used in the $http.get function
     var thisVar = this;
@@ -45,34 +23,37 @@ var jobsCtrlGetJson;
     // This variable will contain the job selected via this.selectJob function
     thisVar.selectedJobObject = {};
 
-    this.selectJob = function(jobIndex) {
-      console.log("The jobIndex is " +jobIndex);
-      console.log("The thisVar.jobs is " +thisVar.jobs);
-      thisVar.selectedJobObject = thisVar.jobs[jobIndex];
-      console.log("The selectedJobObject is " +thisVar.selectedJobObject);
+    this.selectJob = function(jobIndexInput) {
+      jobIndex = jobIndexInput;
+      thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
       $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
     };
 
-    getJobsJson(thisVar.selectJob(0),thisVar.jobs);
+    JobsCtrlGetJson = function(jobIndexInput){
+      // Select the job via index number from the array
+      $http.get('/jobs.json').success(function(data){
+        thisVar.jobs = data;
+        // Set the default job object
+        thisVar.selectJob(jobIndexInput);
+      }). // Success function
+      error(function(data){
+        console.log("Could not retreive JSON data!");
+      });
+    }
 
-    // Select the job via index number from the array
-    // $http.get('/jobs.json').success(function(data){
-    //   thisVar.jobs = data;
-    //   // Set the default job object
-    //   thisVar.selectJob(0);
-    // }). // Success function
-    // error(function(data){
-    //   console.log("Could not retreive JSON data!");
-    // });
+    JobsCtrlGetJson(0);
 
     // A tester that checks if the inputted number is the currently selected job
-    this.isSelected = function(jobIndex) {
-      return this.selectJob === jobIndex;
+    this.isSelected = function(jobIndexInput) {
+      return this.selectJob === jobIndexInput;
     };
+
+    // This doesn't do anything. I'm learning how to use Angular services
+    CommonFunctions.hello();
 
   }]); // Controller
 
-// })();
+})();
 
 // Form modifications - Under construction
 // $('.new_comment .button-submit') // Button for submitting new comment
