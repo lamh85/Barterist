@@ -1,10 +1,12 @@
 class CommentsController < ApplicationController
 
+  # NOTE - Using jQuery AJAX to post new comments
   def create
     @comment = current_user.comments.new(comment_params)
     @comment.job_id = params[:comment][:job_id]
     if @comment.save
-      redirect_to jobs_path
+      # Will need to put Rails AJAX here
+      # redirect_to jobs_path
       # session[:]
     end
   end

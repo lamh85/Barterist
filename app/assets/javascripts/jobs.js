@@ -1,3 +1,4 @@
+// Should we make a JSON-get accessible outside of the Angular closure?
 // var getJson = function(){
 //   $.ajax({
 //     url: "/jobs.json",
@@ -48,3 +49,7 @@
   }]); // Controller
 
 })();
+
+// Form modifications - Under construction
+// $('.new_comment .button-submit') // Button for submitting new comment
+// $('.new_comment').attr('action',''); // Stripping the action attribute
