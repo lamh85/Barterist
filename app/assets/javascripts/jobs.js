@@ -1,6 +1,16 @@
-var helloJobsJS = "hello";
-
-// $( document ).ready(function() {
+// var getJson = function(){
+//   $.ajax({
+//     url: "/jobs.json",
+//     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+//     dataType: "json",
+//     method: "get",
+//     error: function() { console.log("Cannot GET AJAX file") },
+//     success: function(data){
+//       console.log("Get-JSON successful!");
+//       jsonData = data;
+//     } 
+//   });
+// } // Get JSON data
 
 (function(){
 
@@ -15,21 +25,20 @@ var helloJobsJS = "hello";
     // This variable will contain the job selected via this.selectJob function
     thisVar.selectedJobObject = {};
 
-    // Select the job via index number from the array
-    $http.get('/jobs.json').success(function(data){
-      thisVar.jobs = data;
-      // Set the default job object
-      thisVar.selectedJobObject = thisVar.jobs[0];
-      $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
-    }). // Success function
-    error(function(data){
-      console.log("Could not retreive JSON data!");
-    });
-
     this.selectJob = function(jobIndex) {
       thisVar.selectedJobObject = thisVar.jobs[jobIndex];
       $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
     };
+
+    // Select the job via index number from the array
+    $http.get('/jobs.json').success(function(data){
+      thisVar.jobs = data;
+      // Set the default job object
+      thisVar.selectJob(0);
+    }). // Success function
+    error(function(data){
+      console.log("Could not retreive JSON data!");
+    });
 
     // A tester that checks if the inputted number is the currently selected job
     this.isSelected = function(jobIndex) {
@@ -38,9 +47,4 @@ var helloJobsJS = "hello";
 
   }]); // Controller
 
-})();  
-
-// });
-
-// (function(){
-// })();
+})();
