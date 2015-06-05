@@ -1,0 +1,10 @@
+$('#list-comments').html('<%= render partial: "/comments/comments" %>');
+
+JobsCtrlGetJson(jobIndex);
+
+console.log("create.js.erb file loaded!");
+
+// May want to try this function:
+// $.get('/api/mydiv', function(data) {
+//   $('#mydiv').html(data);
+// });

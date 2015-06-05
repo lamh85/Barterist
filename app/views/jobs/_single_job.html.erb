@@ -6,13 +6,13 @@
 <h3>Comments</h3>
 
 <div id="list-comments">
-  <%= render partial: "comments" %>
+  <%= render partial: "/comments/comments" %>
 </div>
 
 <h3>Add a comment</h3>
 
 <% if current_user %>
-  <%= simple_form_for @comment do |f| %>
+  <%= simple_form_for @comment, remote: true do |f| %>
     <%= f.input :title %>
     <%= f.input :body, label: "Comment" %>
     <%= f.input "job_id", as: :hidden, input_html: {class: "hidden-field"} %>
