@@ -5,10 +5,8 @@
 
 <h3>Comments</h3>
 
-<div ng-repeat="comment in jobsCtrl.selectedJobObject.comments">
-  <h4>{{comment.title || "(this comment has no title)"}}</h4>
-  <p class="content-meta">Submitted by {{comment.user.first_name}} {{comment.user.last_name}}</p>
-  <p>{{comment.body}}</p>
+<div id="list-comments">
+  <%= render partial: "comments" %>
 </div>
 
 <h3>Add a comment</h3>

@@ -4,10 +4,8 @@ source 'https://rubygems.org'
 # ############
 
 gem 'simple_form'
-# gem 'angularjs-rails'
 gem 'bootstrap-sass'
 gem 'jquery-turbolinks'
-# gem "angular-turbolinks"
 
 # RAILS DEFAULTS
 # ##############

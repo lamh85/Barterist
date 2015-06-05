@@ -13,6 +13,8 @@
 //   });
 // } // Get JSON data
 
+var jobsCtrlGetJson;
+
 (function(){
 
   var app = angular.module("Barterist", []);

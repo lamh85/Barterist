@@ -4,10 +4,11 @@ class CommentsController < ApplicationController
   def create
     @comment = current_user.comments.new(comment_params)
     @comment.job_id = params[:comment][:job_id]
-    if @comment.save
-      # Will need to put Rails AJAX here
-      # redirect_to jobs_path
-      # session[:]
+    respond_to do |format|
+      if @comment.save
+        format.html { render "jobs/index" ,notice: "Search complete" }
+        format.js { render }
+      end
     end
   end
 
