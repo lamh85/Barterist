@@ -2,6 +2,7 @@ var data;
 var jobIndex;
 // Make this variable global so it can be accessible outside of the Angular "app" variable
 var JobsCtrlGetJson;
+var JobsController;
 
 (function(){
 
@@ -14,7 +15,7 @@ var JobsCtrlGetJson;
     };
   });
 
-  app.controller("JobsController", ['$http','CommonFunctions', function($http,CommonFunctions) {
+  JobsController = app.controller("JobsController", ['$http','CommonFunctions', function($http,CommonFunctions) {
 
     // Store the value of "this" into a variable so it can be used in the $http.get function
     var thisVar = this;
@@ -52,6 +53,43 @@ var JobsCtrlGetJson;
     CommonFunctions.hello();
 
   }]); // Controller
+
+  app.directive("commentsList",function(){
+    return {
+      restrict: "E",
+      templateUrl: "comments-list.html",
+      // controller: JobsController,
+      controller: function($http){
+        // Store the value of "this" into a variable so it can be used in the $http.get function
+        var thisVar = this;
+
+        thisVar.jobs = [];
+        // This variable will contain the job selected via this.selectJob function
+        thisVar.selectedJobObject = {};
+
+        this.selectJob = function(jobIndexInput) {
+          jobIndex = jobIndexInput;
+          thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
+          $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
+        };
+
+        JobsCtrlGetJson = function(jobIndexInput){
+          // Select the job via index number from the array
+          $http.get('/jobs.json').success(function(data){
+            thisVar.jobs = data;
+            // Set the default job object
+            thisVar.selectJob(jobIndexInput);
+          }). // Success function
+          error(function(data){
+            console.log("Could not retreive JSON data!");
+          });
+        }
+
+        JobsCtrlGetJson(0);
+      }, // END OF: controller: function($http)
+      controllerAs: "JobsCtrl"
+    };
+  });
 
 })();
 

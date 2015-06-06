@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'jquery-turbolinks'
+gem 'angular-rails-templates'
 
 # RAILS DEFAULTS
 # ##############
