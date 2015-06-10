@@ -15,7 +15,7 @@ var JobsController;
     };
   });
 
-  JobsController = app.controller("JobsController", ['$http','CommonFunctions', function($http,CommonFunctions) {
+  JobsController = app.controller("JobsController", ['$http','CommonFunctions','$scope', function($http,CommonFunctions,$scope) {
 
     // Store the value of "this" into a variable so it can be used in the $http.get function
     var thisVar = this;
@@ -27,8 +27,24 @@ var JobsController;
     this.selectJob = function(jobIndexInput) {
       jobIndex = jobIndexInput;
       thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
-      $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
+      $('#user_id').attr('value', thisVar.selectedJobObject.id);
     };
+    
+    this.postData = function() {
+      console.log("function fired!");
+      // this.jobs = [];
+      // this.selectedJobObject = {};
+
+      var postDataObject = {
+        title: $('#comment_title').val(),
+        body: $('#comment_body').val(),
+        user_id: $('#user_id').val()
+      }
+
+      $http.post('/comments', postDataObject).success(function(){
+        console.log("Successfully posted");
+      });
+    }
 
     JobsCtrlGetJson = function(jobIndexInput){
       // Select the job via index number from the array
@@ -53,49 +69,6 @@ var JobsController;
     CommonFunctions.hello();
 
   }]); // Controller
-
-  app.directive("commentsList",function(){
-    return {
-      restrict: "E",
-      templateUrl: "comments-list.html",
-      // controller: JobsController,
-      controller: function($http){
-        // Store the value of "this" into a variable so it can be used in the $http.get function
-        var thisVar = this;
-
-        thisVar.jobs = [];
-        // This variable will contain the job selected via this.selectJob function
-        thisVar.selectedJobObject = {};
-
-        this.postData = function(event) {
-          event.preventDefault();
-          console.log("function fired!");
-        }
-
-        this.selectJob = function(jobIndexInput) {
-          jobIndex = jobIndexInput;
-          thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
-          $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
-          $('#new_comment .button-submit').attr('ng-click',"jobsCtrl.postData()");
-        };
-
-        JobsCtrlGetJson = function(jobIndexInput){
-          // Select the job via index number from the array
-          $http.get('/jobs.json').success(function(data){
-            thisVar.jobs = data;
-            // Set the default job object
-            thisVar.selectJob(jobIndexInput);
-          }). // Success function
-          error(function(data){
-            console.log("Could not retreive JSON data!");
-          });
-        }
-
-        JobsCtrlGetJson(0);
-      }, // END OF: controller: function($http)
-      controllerAs: "JobsCtrl"
-    };
-  });
 
 })();
 

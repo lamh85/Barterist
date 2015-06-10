@@ -12,13 +12,20 @@
 
 <h3>Add a comment</h3>
 
-<% if current_user %>
-  <%= simple_form_for @comment, remote: true do |f| %>
-    <%= f.input :title %>
-    <%= f.input :body, label: "Comment" %>
-    <%= f.input "job_id", as: :hidden, input_html: {class: "hidden-field"} %>
-    <%= f.submit "Submit Comment!", class: "button-submit"%>
-  <% end %>
-<% else %>
-  Please sign in to add a comment.
-<% end %>
+<%# if current_user %>
+  <!-- <form> -->
+  <form novalidate>
+    <input name="title" id="title">
+    <textarea name="body" id="body"></textarea>
+    <button ng-click="jobsCtrl.postData()">Submit!</button>
+  </form>
+  <!-- </form> -->
+  <%#= simple_form_for @comment, remote: true do |f| %>
+    <%#= f.input :title %>
+    <%#= f.input :body, label: "Comment" %>
+    <%#= f.input "job_id", as: :hidden, input_html: {class: "hidden-field"} %>
+    <%#= f.submit "Submit Comment!", class: "button-submit"%>
+  <%# end %>
+<%# else %>
+  <!-- Please sign in to add a comment. -->
+<%# end %>
