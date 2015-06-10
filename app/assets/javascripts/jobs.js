@@ -1,4 +1,4 @@
-var data;
+var dataGlobal;
 var jobIndex;
 // Make this variable global so it can be accessible outside of the Angular "app" variable
 var JobsCtrlGetJson;
@@ -33,7 +33,7 @@ var JobsController;
     JobsCtrlGetJson = function(jobIndexInput){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
-        thisVar.jobs = data;
+        dataGlobal = thisVar.jobs = data;
         // Set the default job object
         thisVar.selectJob(jobIndexInput);
       }). // Success function

@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
     @comment.job_id = params[:comment][:job_id]
     respond_to do |format|
       if @comment.save
-        # format.html { redirect_to jobs_path, notice: "Finished posting comment!" }
+        format.html { redirect_to jobs_path, notice: "Finished posting comment!" }
         format.js { render }
       end
     end

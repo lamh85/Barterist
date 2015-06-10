@@ -15,6 +15,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+  padding: 1em 0;
+}
+
 .job-list-item{
   cursor: pointer;
 }

@@ -1,11 +1,13 @@
-// $('#list-comments').html('<%= render partial: "/comments/comments" %>');
+$('#list-comments').html('hello world');
+
+// <%= render partial: "/comments/comments" %>
 
 // JobsCtrlGetJson(jobIndex);
 
 // May want to try this function:
 // http://stackoverflow.com/questions/17886578/refresh-part-of-page-div
-$.get('/jobs.json', function(data) {
-  $('#list-comments').html(data);
-});
+// $.get('/jobs.json', function(data) {
+//   $('#list-comments').html(data);
+// });
 
 console.log("create.js.erb file loaded!");
