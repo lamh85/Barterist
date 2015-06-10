@@ -67,10 +67,16 @@ var JobsController;
         // This variable will contain the job selected via this.selectJob function
         thisVar.selectedJobObject = {};
 
+        this.postData = function(event) {
+          event.preventDefault();
+          console.log("function fired!");
+        }
+
         this.selectJob = function(jobIndexInput) {
           jobIndex = jobIndexInput;
           thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
           $('.hidden-field').attr('value', thisVar.selectedJobObject.id);
+          $('#new_comment .button-submit').attr('ng-click',"jobsCtrl.postData()");
         };
 
         JobsCtrlGetJson = function(jobIndexInput){
@@ -93,6 +99,23 @@ var JobsController;
 
 })();
 
+$('#new_comment');
+$('#comment_title').val();
+$('#comment_body').val();
+$('#new_comment .button-submit');
+
 // Form modifications - Under construction
 // $('.new_comment .button-submit') // Button for submitting new comment
 // $('.new_comment').attr('action',''); // Stripping the action attribute
+
+// Example of jQuery post
+// $("#timer-button").on("click", function() {
+//  $.ajax({
+//    method: "POST",
+//    url: "/clock_timers",
+//    data: {clock_timer: {time: timeSoFar}},
+//    error: function() {alert("error!")},
+//    success: function(response) {
+//      console.log(response);
+//    }
+// })
