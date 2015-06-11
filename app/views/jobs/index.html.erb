@@ -9,6 +9,7 @@
     </div>
   </div>
 
+  <!-- The right side of the screen -->
   <div class="col-md-6" id="single-job-view">
     <%#= render partial: "jobs/single_job" %>
 
@@ -35,8 +36,7 @@
     <form novalidate>
       <input name="comment_title" id="comment_title">
       <textarea name="comment_body" id="comment_body"></textarea>
-      <input type="hidden" name="comment_user_id" id="comment_user_id">
-      <button ng-click="jobsCtrl.postData()">Submit!</button>
+      <button ng-click="jobsCtrl.postComment()">Submit!</button>
     </form>
 
   </div>
