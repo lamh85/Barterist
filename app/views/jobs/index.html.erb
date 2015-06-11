@@ -1,8 +1,7 @@
 <div ng-controller="JobsController as jobsCtrl">
-  <h1>Jobs</h1>
 
-  <!-- <div class="col-md-12"> -->
   <div class="col-md-6">
+    <h1>Job Postings</h1>
     <div ng-repeat="job in jobsCtrl.jobs">
       <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
       <span class="content-meta">Posted on {{job.created_at.substring(0,10)}}</span><p>
@@ -11,7 +10,6 @@
 
   <!-- The right side of the screen -->
   <div class="col-md-6" id="single-job-view">
-    <%#= render partial: "jobs/single_job" %>
 
     <h2>{{jobsCtrl.selectedJobObject.title}}</h2>
     <p class="content-meta">Created by {{jobsCtrl.selectedJobObject.user.first_name}} {{jobsCtrl.selectedJobObject.user.last_name}} on {{jobsCtrl.selectedJobObject.created_at.substring(0,10)}}</p>
@@ -20,8 +18,6 @@
     <h3>Comments</h3>
 
     <div id="list-comments">
-      <!-- <comments-list></comments-list> -->
-      <%#= render partial: "/comments/comments" %>
       <div ng-repeat="comment in jobsCtrl.selectedJobObject.comments">
         <h4>{{comment.title || "(this comment has no title)"}}</h4>
         <p class="content-meta">Submitted by {{comment.user.first_name}} {{comment.user.last_name}}</p>
@@ -29,15 +25,35 @@
       </div>
     </div>
 
-    <h3>Add a comment</h3>
+    <div id="new-comment">
+      <% if current_user %>
+        PREVIEW OF YOUR COMMENT
+        <h4>{{title_preview || "Your title goes here"}}</h4>
+        <p class="content-meta">
+          Submitted by 
+          <%= current_user.first_name if current_user.first_name %>
+          <%= current_user.last_name if current_user.last_name %>
+        </p>
+        <p>{{body_preview || "Your message goes here"}}</p>
+      <% end %>
 
-    <%# if current_user %>
-      <!-- <form> -->
-    <form novalidate>
-      <input name="comment_title" id="comment_title">
-      <textarea name="comment_body" id="comment_body"></textarea>
-      <button ng-click="jobsCtrl.postComment()">Submit!</button>
-    </form>
+      <h3>Add a comment</h3>
+
+      <% if current_user %>
+        <!-- <form> -->
+        <form novalidate>
+          <label for="comment_title">Title</label>
+          <input name="comment_title" id="comment_title" ng-model="title_preview">
+
+          <label for="comment_body">Message</label>
+          <textarea name="comment_body" id="comment_body" ng-model="body_preview"></textarea>
+
+          <button ng-click="jobsCtrl.postComment()">Submit!</button>
+        </form>
+      <% else %>
+        Please <%= link_to "log in", login_path %> to leave a comment. Or <%= link_to "register", signup_path %> to become a member.
+      <% end %>
+    </div>
 
   </div>
 

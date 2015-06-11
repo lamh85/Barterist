@@ -1,6 +1,5 @@
+// For debugging purposes, make these variables global so they can be accessible outside of the Angular "app" variable
 var dataGlobal;
-var jobIndex;
-// Make this variable global so it can be accessible outside of the Angular "app" variable
 var JobsCtrlGetJson;
 var JobsController;
 
@@ -8,6 +7,7 @@ var JobsController;
 
   var app = angular.module("Barterist", ['ng-rails-csrf']);
 
+  // This doesn't do anything. I'm learning how to use custom Angular services
   app.factory("CommonFunctions", function() {
     return {
       hello: function() { console.log("hello there111");
@@ -71,7 +71,7 @@ var JobsController;
       return this.selectJob === jobIndexInput;
     };
 
-    // This doesn't do anything. I'm learning how to use Angular services
+    // This doesn't do anything. I'm learning how to use custom Angular services
     CommonFunctions.hello();
 
   }]); // Controller
