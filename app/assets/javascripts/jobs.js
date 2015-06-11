@@ -6,7 +6,7 @@ var JobsController;
 
 (function(){
 
-  var app = angular.module("Barterist", []);
+  var app = angular.module("Barterist", ['ng-rails-csrf']);
 
   app.factory("CommonFunctions", function() {
     return {
@@ -27,9 +27,9 @@ var JobsController;
     this.selectJob = function(jobIndexInput) {
       jobIndex = jobIndexInput;
       thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
-      $('#user_id').attr('value', thisVar.selectedJobObject.id);
+      $('#comment_user_id').attr('value', thisVar.selectedJobObject.id);
     };
-    
+
     this.postData = function() {
       console.log("function fired!");
       // this.jobs = [];
@@ -38,7 +38,7 @@ var JobsController;
       var postDataObject = {
         title: $('#comment_title').val(),
         body: $('#comment_body').val(),
-        user_id: $('#user_id').val()
+        user_id: $('#comment_user_id').val()
       }
 
       $http.post('/comments', postDataObject).success(function(){

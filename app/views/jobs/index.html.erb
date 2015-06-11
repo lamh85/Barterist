@@ -33,9 +33,9 @@
     <%# if current_user %>
       <!-- <form> -->
     <form novalidate>
-      <input name="title" id="title">
-      <textarea name="body" id="body"></textarea>
-      <input type="hidden" name="user_id" id="user_id">
+      <input name="comment_title" id="comment_title">
+      <textarea name="comment_body" id="comment_body"></textarea>
+      <input type="hidden" name="comment_user_id" id="comment_user_id">
       <button ng-click="jobsCtrl.postData()">Submit!</button>
     </form>
 

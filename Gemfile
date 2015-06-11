@@ -7,6 +7,7 @@ gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'jquery-turbolinks'
 gem 'angular-rails-templates'
+gem 'ng-rails-csrf'
 
 # RAILS DEFAULTS
 # ##############
