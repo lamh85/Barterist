@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#logout'
+  get 'change_page' => 'jobs#change_page'
 
   resources :users
   resources :jobs
