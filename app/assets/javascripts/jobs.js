@@ -1,6 +1,4 @@
 // For debugging purposes, make these variables global so they can be accessible outside of the Angular "app" variable
-var dataGlobal;
-var JobsCtrlGetJson;
 var JobsController;
 
 (function(){
@@ -19,11 +17,45 @@ var JobsController;
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
     var thisVar = this;
-
     thisVar.jobs = [];
     // This variable will contain the job selected via this.selectJob function
     thisVar.selectedJobObject = {};
+    // This variable keeps the selected job's index persisting when the user submits a comment
     this.selectedJobIndex;
+
+    // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
+    this.jobsDbLength;
+    this.pageSelected = 1; // Default is 1
+    this.pageNumberPrev = null;
+    this.pageNumberNext = null;
+    this.pageNumbers = [];
+    this.jobsPerPage = 10; // Default is 10
+    this.jobsDbIndexHead;
+    this.jobsDbIndexTail;
+
+    // Populate the array of page numbers
+    this.makePageNumbers = function(){
+      for (i = 0; i < Math.ceil(this.jobsDbLength / this.jobsPerPage); i++) {
+        this.pageNumbers.push(i+1);
+      }
+
+      if (this.pageSelected > 1) {
+        this.pageNumberPrev = this.pageSelected - 1
+      }
+
+      if (this.pageSelected <= this.pageNumbers.length) {
+        this.pageNumberNext = this.pageSelected + 1
+      }
+    };
+
+    // Determines the index numbers to limit the ActiveRecord results
+    // var setJobsDbHeadTail = function(this.pageSelected, this.jobsPerPage) {
+
+    // }
+
+    // page_number * jobs_per_page - 1 = index_tail
+    // index_head = index_tail - jobs_per_page - 1
+
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
@@ -37,9 +69,11 @@ var JobsController;
     this.getJson = function(jobIndexInput){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
-        dataGlobal = thisVar.jobs = data;
+        thisVar.jobs = data;
         // Set the default job object
         thisVar.selectJob(jobIndexInput);
+        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
+        thisVar.makePageNumbers();
       }). // Success function
       error(function(data){
         console.log("Could not retreive JSON data!");
@@ -50,8 +84,6 @@ var JobsController;
     // AJAX POST call
     this.postComment = function() {
       console.log("function fired!");
-      // this.jobs = [];
-      // this.selectedJobObject = {};
 
       var postDataObject = {
         title: $('#comment_title').val(),

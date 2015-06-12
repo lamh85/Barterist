@@ -6,6 +6,14 @@
       <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
       <span class="content-meta">Posted on {{job.created_at.substring(0,10)}}</span><p>
     </div>
+
+    <div id="page-numbers">
+      Previous page
+      <div class="page-number-cont" ng-repeat="pageNumber in jobsCtrl.pageNumbers">
+        {{pageNumber}}
+      </div>
+      Next page
+    </div>
   </div>
 
   <!-- The right side of the screen -->

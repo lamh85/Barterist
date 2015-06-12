@@ -1,9 +1,10 @@
 class JobsController < ApplicationController
 
   def index
-    byebug
+    # The JS code will default the page number to 1
     @jobs = Job.first(10)
     @comment = Comment.new
+    @jobs_length = Job.count
     respond_to do |format|
       format.json
       format.html
