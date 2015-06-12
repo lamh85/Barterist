@@ -24,38 +24,54 @@ var JobsController;
     this.selectedJobIndex;
 
     // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
+    // ///////////////
     this.jobsDbLength;
+    // Variables needed for selecting a page:
     this.pageSelected = 1; // Default is 1
-    this.pageNumberPrev = null;
-    this.pageNumberNext = null;
-    this.pageNumbers = [];
-    this.jobsPerPage = 10; // Default is 10
     this.jobsDbIndexHead;
     this.jobsDbIndexTail;
+    // Variables needed for loading the pagination links:
+    this.pageNumbers = [];
+    this.pageNumberPrev = null;
+    this.pageNumberNext = null;
+    this.jobsPerPage = 10; // Default is 10
 
     // Populate the array of page numbers
     this.makePageNumbers = function(){
       for (i = 0; i < Math.ceil(this.jobsDbLength / this.jobsPerPage); i++) {
         this.pageNumbers.push(i+1);
       }
+    };
 
+    this.makePagePrevNext = function(){
       if (this.pageSelected > 1) {
         this.pageNumberPrev = this.pageSelected - 1
       }
-
       if (this.pageSelected <= this.pageNumbers.length) {
         this.pageNumberNext = this.pageSelected + 1
       }
-    };
+    }
+
+    this.selectPage = function(selection){
+      this.pageSelected = selection;
+      this.jobsDbIndexTail = selection * this.jobsPerPage;
+      this.jobsDbIndexHead = this.jobsDbIndexTail - this.jobsPerPage - 1;
+      // insert get JSON function
+
+      this.getJson = function(jobIndexInput){
+        $http.get(
+          '/change_page?index_head=' +thisVar.jobsDbIndexHead+ '&index_tail=' +thisVar.jobsDbIndexTail
+        ).success(function(data){
+
+        }).error(function(data){
+
+        });
+      }
+    }
 
     // Determines the index numbers to limit the ActiveRecord results
     // var setJobsDbHeadTail = function(this.pageSelected, this.jobsPerPage) {
-
     // }
-
-    // page_number * jobs_per_page - 1 = index_tail
-    // index_head = index_tail - jobs_per_page - 1
-
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {

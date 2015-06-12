@@ -28,8 +28,8 @@ class JobsController < ApplicationController
   # The JS code needs to append the parameters to the link path like this:
   # http://localhost:3000/jobs?my_var=my_value
   # Resulting params: {"my_var"=>"my_value", "controller"=>"jobs", "action"=>"index"}
-  def change_page(index_head, index_tail)
-    @jobs = Job.all[index_head..index_tail]
+  def change_page
+    @jobs = Job.all[params[:index_head]..params[:index_tail]]
     respond_to do |format|
       format.json {render "jobs"}
     end
