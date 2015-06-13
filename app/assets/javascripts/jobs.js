@@ -36,13 +36,6 @@ var JobsController;
     this.pageNumberNext = null;
     this.jobsPerPage = 10; // Default is 10
 
-    // Populate the array of page numbers
-    this.makePageNumbers = function(){
-      for (i = 0; i < Math.ceil(this.jobsDbLength / this.jobsPerPage); i++) {
-        this.pageNumbers.push(i+1);
-      }
-    };
-
     this.makePagePrevNext = function(){
       if (this.pageSelected > 1) {
         this.pageNumberPrev = this.pageSelected - 1
@@ -52,26 +45,34 @@ var JobsController;
       }
     }
 
-    this.selectPage = function(selection){
-      this.pageSelected = selection;
-      this.jobsDbIndexTail = selection * this.jobsPerPage;
-      this.jobsDbIndexHead = this.jobsDbIndexTail - this.jobsPerPage - 1;
-      // insert get JSON function
-
-      this.getJson = function(jobIndexInput){
-        $http.get(
-          '/change_page?index_head=' +thisVar.jobsDbIndexHead+ '&index_tail=' +thisVar.jobsDbIndexTail
-        ).success(function(data){
-
-        }).error(function(data){
-
-        });
+    // Populate the array of page numbers
+    this.makePageNumbers = function(){
+      for (i = 0; i < Math.ceil(this.jobsDbLength / this.jobsPerPage); i++) {
+        this.pageNumbers.push(i+1);
       }
+      this.makePagePrevNext();
+    };
+
+    this.changeJobsDbIndex = function(indexHead, indexTail){
+      $http.get(
+        '/change_page?index_head=' +indexHead+
+        '&index_tail=' +indexTail
+      ).success(function(data){
+        thisVar.jobs = data;
+        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
+        thisVar.makePageNumbers();
+      }).error(function(data){
+        console.log("Could not GET JSON");
+      });
     }
 
-    // Determines the index numbers to limit the ActiveRecord results
-    // var setJobsDbHeadTail = function(this.pageSelected, this.jobsPerPage) {
-    // }
+    this.selectPage = function(pageSelection){
+      this.pageSelected = pageSelection;
+      this.jobsDbIndexTail = pageSelection * this.jobsPerPage;
+      this.jobsDbIndexHead = this.jobsDbIndexTail - this.jobsPerPage - 1;
+      // Run the function for GET
+      this.changeJobsDbIndex(this.jobsDbIndexHead, this.jobsDbIndexTail);
+    }
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
@@ -97,7 +98,7 @@ var JobsController;
     }
     this.getJson(0);
 
-    // AJAX POST call
+    // AJAX POST comment
     this.postComment = function() {
       console.log("function fired!");
 
@@ -112,7 +113,7 @@ var JobsController;
         // Refresh the JSON data
         thisVar.getJson(thisVar.selectedJobIndex);
       });
-    } // AJAX POST call
+    } // AJAX POST comment
 
     // A tester that checks if the inputted number is the currently selected job
     this.isSelected = function(jobIndexInput) {
