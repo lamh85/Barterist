@@ -27,14 +27,14 @@ var JobsController;
     // ///////////////
     this.jobsDbLength;
     // Variables needed for selecting a page:
-    this.pageSelected = 1; // Default is 1
-    this.jobsDbIndexHead;
-    this.jobsDbIndexTail;
+    this.pageSelected = 1;    // Default is 1
+    this.jobsDbIndexHead = 0; // Default is 0
+    this.jobsDbIndexTail = 9; // Default is 9
     // Variables needed for loading the pagination links:
     this.pageNumbers = [];
     this.pageNumberPrev = null;
     this.pageNumberNext = null;
-    this.jobsPerPage = 10; // Default is 10
+    this.jobsPerPage = 10;    // Default is 10
 
     this.makePagePrevNext = function(){
       if (this.pageSelected > 1) {
@@ -53,14 +53,38 @@ var JobsController;
       this.makePagePrevNext();
     };
 
-    this.changeJobsDbIndex = function(indexHead, indexTail){
+    // Set the content for the RIGHT side of the webpage
+    this.selectJob = function(jobIndexInput) {
+      console.log("The selected job's index is: " +jobIndexInput);
+      this.selectedJobIndex = jobIndexInput;
+      // thisVar.selectedJobObject affects the RIGHT SIDE of the webpage
+      thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
+      $('#comment_user_id').attr('value', jobIndexInput);
+    };
+
+    // Store the JSON data into the array of jobs.
+    this.getJson = function(firstTime){
+      // Select the job via index number from the array
+      $http.get('/jobs.json').success(function(data){
+        thisVar.jobs = data;
+        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
+        thisVar.makePageNumbers();
+        // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
+        firstTime == true ? thisVar.selectJob(0);
+      }). // Success function
+      error(function(data){
+        console.log("Could not retreive JSON data!");
+      });
+    }
+    this.getJson(true);
+
+    // Change the JSON file
+    this.changeJsonContent = function(indexHead, indexTail){
       $http.get(
         '/change_page?index_head=' +indexHead+
         '&index_tail=' +indexTail
       ).success(function(data){
-        thisVar.jobs = data;
-        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
-        thisVar.makePageNumbers();
+        thisVar.getJson(false);
       }).error(function(data){
         console.log("Could not GET JSON");
       });
@@ -71,32 +95,8 @@ var JobsController;
       this.jobsDbIndexTail = pageSelection * this.jobsPerPage;
       this.jobsDbIndexHead = this.jobsDbIndexTail - this.jobsPerPage - 1;
       // Run the function for GET
-      this.changeJobsDbIndex(this.jobsDbIndexHead, this.jobsDbIndexTail);
+      this.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
     }
-
-    // Set the content for the RIGHT side of the webpage
-    this.selectJob = function(jobIndexInput) {
-      console.log("The selected job's index is: " +jobIndexInput);
-      this.selectedJobIndex = jobIndexInput;
-      thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
-      $('#comment_user_id').attr('value', jobIndexInput);
-    };
-
-    // GET the JSON data
-    this.getJson = function(jobIndexInput){
-      // Select the job via index number from the array
-      $http.get('/jobs.json').success(function(data){
-        thisVar.jobs = data;
-        // Set the default job object
-        thisVar.selectJob(jobIndexInput);
-        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
-        thisVar.makePageNumbers();
-      }). // Success function
-      error(function(data){
-        console.log("Could not retreive JSON data!");
-      });
-    }
-    this.getJson(0);
 
     // AJAX POST comment
     this.postComment = function() {
@@ -111,7 +111,7 @@ var JobsController;
       $http.post('/comments', postDataObject).success(function(){
         console.log("Successfully posted");
         // Refresh the JSON data
-        thisVar.getJson(thisVar.selectedJobIndex);
+        thisVar.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
       });
     } // AJAX POST comment
 
