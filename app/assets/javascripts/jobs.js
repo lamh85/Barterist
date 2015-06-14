@@ -27,21 +27,21 @@ var JobsController;
     // ///////////////
     this.jobsDbLength;
     // Variables needed for selecting a page:
-    this.pageSelected = 1;    // Default is 1
-    this.jobsDbIndexHead = 0; // Default is 0
-    this.jobsDbIndexTail = 9; // Default is 9
+    this.pageSelected = 1;
+    this.jobsDbIndexHead = 0;
+    this.jobsDbIndexTail = 9;
     // Variables needed for loading the pagination links:
     this.pageNumbers = [];
     this.pageNumberPrev = null;
-    this.pageNumberNext = null;
-    this.jobsPerPage = 10;    // Default is 10
+    this.pageNumberNext = 2;
+    this.jobsPerPage = 10;
 
     this.makePagePrevNext = function(){
-      if (this.pageSelected > 1) {
-        this.pageNumberPrev = this.pageSelected - 1
+      if ( this.pageSelected > 1 ) {
+        this.pageNumberPrev = this.pageSelected - 1;
       }
-      if (this.pageSelected <= this.pageNumbers.length) {
-        this.pageNumberNext = this.pageSelected + 1
+      if ( this.pageSelected <= this.pageNumbers.length ) { 
+        this.pageNumberNext = this.pageSelected + 1;
       }
     }
 
@@ -70,7 +70,9 @@ var JobsController;
         thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
         thisVar.makePageNumbers();
         // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
-        firstTime == true ? thisVar.selectJob(0);
+        if (firstTime == true) {
+          thisVar.selectJob(0);
+        }
       }). // Success function
       error(function(data){
         console.log("Could not retreive JSON data!");
