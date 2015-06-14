@@ -8,13 +8,17 @@
     </div>
 
     <div id="page-numbers">
-      <li>
-      </li>
-      Previous page
-      <li class="page-number" ng-repeat="pageNumber in jobsCtrl.pageNumbers">
-        {{pageNumber}}
-      </li>
-      Next page
+      <ul class="page-number">
+        <li>
+          Previous page
+        </li>
+        <li ng-repeat="pageNumber in jobsCtrl.pageNumbers">
+          {{pageNumber}}
+        </li>
+        <li>
+          Next page
+        </li>
+      </ul>
     </div>
   </div>
 
