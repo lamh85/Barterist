@@ -27,12 +27,16 @@ input, textarea {
   width: 100%;
 }
 
-.page-number li{
+.page-number li {
   padding: 0.5em;
   border: 1px solid grey;
   margin: 0.25em;
   list-style: none;
   display: inline-block;
+}
+
+li.prev-next-disabled {
+  text-decoration: line-through
 }
 
 .content-meta {

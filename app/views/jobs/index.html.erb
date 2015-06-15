@@ -9,7 +9,7 @@
 
     <div id="page-numbers">
       <ul class="page-number">
-        <li>
+        <li ng-class="{'prev-next-disabled': jobsCtrl.pageSelectedIsFirst}">
           Previous page
         </li>
         <li ng-repeat="pageNumber in jobsCtrl.pageNumbers">

@@ -36,6 +36,10 @@ var JobsController;
     this.pageNumberNext = 2;
     this.jobsPerPage = 10;
 
+    this.pageSelectedIsFirst = function() {
+      return this.pageSelected == 1;
+    }
+
     this.makePagePrevNext = function(){
       if ( this.pageSelected > 1 ) {
         this.pageNumberPrev = this.pageSelected - 1;
