@@ -13,16 +13,8 @@ var JobsController;
     };
   });
 
-  JobsController = app.controller("JobsController", ['$http','CommonFunctions','$scope', function($http,CommonFunctions,$scope) {
-
-    // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
-    var thisVar = this;
-    thisVar.jobs = [];
-    // This variable will contain the job selected via this.selectJob function
-    thisVar.selectedJobObject = {};
-    // This variable keeps the selected job's index persisting when the user submits a comment
-    this.selectedJobIndex;
-
+  PagesController = app.controller("PagesController", function(){
+    var thisVarPages = this;
     // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
     // ///////////////
     this.jobsDbLength;
@@ -55,7 +47,18 @@ var JobsController;
         this.pageNumbers.push(i+1);
       }
       this.makePagePrevNext();
-    };
+    }
+  });
+
+  JobsController = app.controller("JobsController", ['$http','CommonFunctions','$scope', function($http,CommonFunctions,$scope) {
+
+    // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
+    var thisVar = this;
+    thisVar.jobs = [];
+    // This variable will contain the job selected via this.selectJob function
+    thisVar.selectedJobObject = {};
+    // This variable keeps the selected job's index persisting when the user submits a comment
+    this.selectedJobIndex;
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
@@ -71,8 +74,8 @@ var JobsController;
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
         thisVar.jobs = data;
-        thisVar.jobsDbLength = thisVar.jobs[0].jobs_length;
-        thisVar.makePageNumbers();
+        thisVarPages.jobsDbLength = thisVar.jobs[0].jobs_length;
+        thisVarPages.makePageNumbers();
         // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
         if (firstTime == true) {
           thisVar.selectJob(0);

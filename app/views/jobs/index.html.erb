@@ -1,18 +1,19 @@
 <div ng-controller="JobsController as jobsCtrl">
 
   <div class="col-md-6">
+
     <h1>Job Postings</h1>
     <div ng-repeat="job in jobsCtrl.jobs">
       <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
       <span class="content-meta">Posted on {{job.created_at.substring(0,10)}}</span><p>
     </div>
 
-    <div id="page-numbers">
+    <div id="page-numbers" ng-controller="PagesController as pagesCtrl">
       <ul class="page-number">
-        <li ng-class="{'prev-next-disabled': jobsCtrl.pageSelectedIsFirst}">
+        <li ng-class="{'prev-next-disabled': pagesCtrl.pageSelectedIsFirst}">
           Previous page
         </li>
-        <li ng-repeat="pageNumber in jobsCtrl.pageNumbers">
+        <li ng-repeat="pageNumber in pagesCtrl.pageNumbers">
           {{pageNumber}}
         </li>
         <li>
@@ -20,6 +21,7 @@
         </li>
       </ul>
     </div>
+
   </div>
 
   <!-- The right side of the screen -->
