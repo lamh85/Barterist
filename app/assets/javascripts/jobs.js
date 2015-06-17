@@ -14,7 +14,8 @@ var JobsController;
   });
 
   PagesController = app.controller("PagesController", function(){
-    var thisVarPages = this;
+    thisVarPages = this;
+    console.log("thisVarPages is " +thisVarPages);
     // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
     // ///////////////
     this.jobsDbLength;
