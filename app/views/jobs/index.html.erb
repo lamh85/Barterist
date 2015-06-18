@@ -13,7 +13,8 @@
         <li ng-class="{'prev-next-disabled': pagesCtrl.pageSelectedIsFirst}">
           Previous page
         </li>
-        <li ng-repeat="pageNumber in pagesCtrl.pageNumbers">
+        <li ng-repeat="pageNumber in pagesCtrl.pageNumbers" ng-click="pagesCtrl.selectPage(pageNumber)" ng-class="{'page-selected': pagesCtrl.pageIsSelected(pageNumber) }">
+        <!-- "pagesCtrl.selectPage({{pageNumber}})" -->
           {{pageNumber}}
         </li>
         <li>

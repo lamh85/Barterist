@@ -15,7 +15,6 @@ var JobsController;
 
   PagesController = app.controller("PagesController", function(){
     thisVarPages = this;
-    console.log("thisVarPages is " +thisVarPages);
     // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
     // ///////////////
     this.jobsDbLength;
@@ -34,12 +33,9 @@ var JobsController;
     }
 
     this.makePagePrevNext = function(){
-      if ( this.pageSelected > 1 ) {
-        this.pageNumberPrev = this.pageSelected - 1;
-      }
-      if ( this.pageSelected <= this.pageNumbers.length ) { 
-        this.pageNumberNext = this.pageSelected + 1;
-      }
+      (this.pageSelected > 1) && (this.pageNumberPrev = this.pageSelected - 1);
+      (this.pageSelected <= this.pageNumbers.length) &&
+        (this.pageNumberNext = this.pageSelected + 1);
     }
 
     // Populate the array of page numbers
@@ -49,15 +45,31 @@ var JobsController;
       }
       this.makePagePrevNext();
     }
+
+    // If the page number is selected, then apply the CSS class
+    this.pageIsSelected = function(pageNumber){
+      return pageNumber === this.pageSelected;
+    }
+
+    this.testFn = function(){
+      console.log("pageSelected is now " +this.pageSelected);      
+    }
+
+    this.selectPage = function(newPage){
+      console.log("hello: " +newPage);
+      this.pageSelected = newPage;
+      this.testFn();
+    }
+
   });
 
   JobsController = app.controller("JobsController", ['$http','CommonFunctions','$scope', function($http,CommonFunctions,$scope) {
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
-    var thisVar = this;
-    thisVar.jobs = [];
+    thisVarJobs = this;
+    thisVarJobs.jobs = [];
     // This variable will contain the job selected via this.selectJob function
-    thisVar.selectedJobObject = {};
+    thisVarJobs.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
     this.selectedJobIndex;
 
@@ -65,8 +77,8 @@ var JobsController;
     this.selectJob = function(jobIndexInput) {
       console.log("The selected job's index is: " +jobIndexInput);
       this.selectedJobIndex = jobIndexInput;
-      // thisVar.selectedJobObject affects the RIGHT SIDE of the webpage
-      thisVar.selectedJobObject = thisVar.jobs[jobIndexInput];
+      // thisVarJobs.selectedJobObject affects the RIGHT SIDE of the webpage
+      thisVarJobs.selectedJobObject = thisVarJobs.jobs[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
     };
 
@@ -74,13 +86,11 @@ var JobsController;
     this.getJson = function(firstTime){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
-        thisVar.jobs = data;
-        thisVarPages.jobsDbLength = thisVar.jobs[0].jobs_length;
+        thisVarJobs.jobs = data;
+        thisVarPages.jobsDbLength = thisVarJobs.jobs[0].jobs_length;
         thisVarPages.makePageNumbers();
         // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
-        if (firstTime == true) {
-          thisVar.selectJob(0);
-        }
+        (firstTime == true) && (thisVarJobs.selectJob(0));
       }). // Success function
       error(function(data){
         console.log("Could not retreive JSON data!");
@@ -94,7 +104,7 @@ var JobsController;
         '/change_page?index_head=' +indexHead+
         '&index_tail=' +indexTail
       ).success(function(data){
-        thisVar.getJson(false);
+        thisVarJobs.getJson(false);
       }).error(function(data){
         console.log("Could not GET JSON");
       });
@@ -110,8 +120,6 @@ var JobsController;
 
     // AJAX POST comment
     this.postComment = function() {
-      console.log("function fired!");
-
       var postDataObject = {
         title: $('#comment_title').val(),
         body: $('#comment_body').val(),
@@ -119,9 +127,8 @@ var JobsController;
       }
 
       $http.post('/comments', postDataObject).success(function(){
-        console.log("Successfully posted");
         // Refresh the JSON data
-        thisVar.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
+        thisVarJobs.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
       });
     } // AJAX POST comment
 
