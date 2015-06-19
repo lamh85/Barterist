@@ -8,7 +8,9 @@ var JobsController;
   // This doesn't do anything. I'm learning how to use custom Angular services
   app.factory("CommonFunctions", function() {
     return {
-      hello: function() { console.log("hello there111");
+      testFn: function(message,callback) {
+        console.log(message);
+        callback;
       }
     };
   });
@@ -32,10 +34,16 @@ var JobsController;
       return this.pageSelected == 1;
     }
 
+    this.pageSelectedIsLast = function() {
+      return this.pageSelected == this.pageNumbers.length;
+    }
+
     this.makePagePrevNext = function(){
       (this.pageSelected > 1) && (this.pageNumberPrev = this.pageSelected - 1);
       (this.pageSelected <= this.pageNumbers.length) &&
         (this.pageNumberNext = this.pageSelected + 1);
+      console.log("the previous page is now " +this.pageNumberPrev);
+      console.log("the next page is now " +this.pageNumberNext);
     }
 
     // Populate the array of page numbers
@@ -51,14 +59,11 @@ var JobsController;
       return pageNumber === this.pageSelected;
     }
 
-    this.testFn = function(){
-      console.log("pageSelected is now " +this.pageSelected);      
-    }
-
     this.selectPage = function(newPage){
-      console.log("hello: " +newPage);
-      this.pageSelected = newPage;
-      this.testFn();
+      if (newPage >= 1 && newPage <= this.pageNumbers.length) {
+        this.pageSelected = newPage;
+        this.makePagePrevNext();
+      }
     }
 
   });
@@ -110,14 +115,6 @@ var JobsController;
       });
     }
 
-    this.selectPage = function(pageSelection){
-      this.pageSelected = pageSelection;
-      this.jobsDbIndexTail = pageSelection * this.jobsPerPage;
-      this.jobsDbIndexHead = this.jobsDbIndexTail - this.jobsPerPage - 1;
-      // Run the function for GET
-      this.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
-    }
-
     // AJAX POST comment
     this.postComment = function() {
       var postDataObject = {
@@ -135,10 +132,13 @@ var JobsController;
     // A tester that checks if the inputted number is the currently selected job
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
-    };
+    }
 
-    // This doesn't do anything. I'm learning how to use custom Angular services
-    CommonFunctions.hello();
+    // These functions don't do anything. I'm learning how to use custom Angular services
+    this.testCallback = function() {
+      console.log("I am from the callback function");
+    }
+    CommonFunctions.testFn("I am from the jobs controller.",thisVarJobs.testCallback());
 
   }]); // Controller
 
