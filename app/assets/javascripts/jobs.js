@@ -6,14 +6,21 @@ var JobsController;
   var app = angular.module("Barterist", ['ng-rails-csrf']);
 
   // This doesn't do anything. I'm learning how to use custom Angular services
-  app.factory("CommonFunctions", function() {
+  app.factory("CommonFunctions", function($http) {
     return {
       testFn: function(message,callback) {
         console.log(message);
         callback;
       }
-    };
-  });
+      getJson: function() {
+        $http.get('/some/url/to/persons').success(function (response) {
+
+        }).error(function(err){ // end success function
+
+        }); // end error function
+      } // getJson function
+    }; // end the return block
+  }); // end app.factory
 
   PagesController = app.controller("PagesController", function(){
     thisVarPages = this;
