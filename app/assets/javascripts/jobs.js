@@ -8,18 +8,8 @@ var JobsController;
   // This doesn't do anything. I'm learning how to use custom Angular services
   app.factory("CommonFunctions", function($http) {
     return {
-      testFn: function(message,callback) {
-        console.log(message);
-        callback;
-      }
-      getJson: function() {
-        $http.get('/some/url/to/persons').success(function (response) {
-
-        }).error(function(err){ // end success function
-
-        }); // end error function
-      } // getJson function
-    }; // end the return block
+      something: "testing"
+    }
   }); // end app.factory
 
   PagesController = app.controller("PagesController", function(){
@@ -140,12 +130,6 @@ var JobsController;
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
     }
-
-    // These functions don't do anything. I'm learning how to use custom Angular services
-    this.testCallback = function() {
-      console.log("I am from the callback function");
-    }
-    CommonFunctions.testFn("I am from the jobs controller.",thisVarJobs.testCallback());
 
   }]); // Controller
 
