@@ -5,11 +5,24 @@ var JobsController;
 
   var app = angular.module("Barterist", ['ng-rails-csrf']);
 
-  app.service('jsonServices', function() {
+  // JobsController = app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope) {
+
+  app.service('jsonServices',['$http',function($http) {
+
     this.sayHello = function() {
-      return "Hello, World!"
+      console.log("Hello, World!");
     };
-  });
+
+    this.getJson = function(successFunction,dataReceiver){
+      // Select the job via index number from the array
+      $http.get('/jobs.json').success(function(data){
+        dataReceiver = data;
+        successFunction;
+      }). // Success function
+      error(function(data){
+      });
+    }    
+  }]); // app.service
 
   PagesController = app.controller("PagesController", function(){
     thisVarPages = this;
@@ -64,7 +77,7 @@ var JobsController;
 
   });
 
-  JobsController = app.controller("JobsController", ['$http','CommonFunctions','$scope', function($http,CommonFunctions,$scope) {
+  JobsController = app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope) {
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
     thisVarJobs = this;
@@ -129,6 +142,14 @@ var JobsController;
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
     }
+
+    this.testFn = function(){
+      console.log("I am a success function from Jobs Controller");
+      console.log("testVar is " +thisVarJobs.testVar);
+    }
+
+    this.testVar = [];
+    jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.testVar);
 
   }]); // Controller
 
