@@ -9,6 +9,8 @@ var JobsController;
 
   app.service('jsonServices',['$http',function($http) {
 
+    this.defineThisVarPages = function(){};
+
     this.sayHello = function() {
       console.log("Hello, World!");
     };
@@ -16,7 +18,9 @@ var JobsController;
     this.getJson = function(successFunction,dataReceiver){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
-        dataReceiver = data;
+        for (i = 0; i < data.length; i++){
+          dataReceiver.push(data[i]);
+        }
         successFunction;
       }). // Success function
       error(function(data){
@@ -81,9 +85,9 @@ var JobsController;
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
     thisVarJobs = this;
-    thisVarJobs.jobs = [];
+    this.jobs = [];
     // This variable will contain the job selected via this.selectJob function
-    thisVarJobs.selectedJobObject = {};
+    this.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
     this.selectedJobIndex;
 
@@ -92,7 +96,7 @@ var JobsController;
       console.log("The selected job's index is: " +jobIndexInput);
       this.selectedJobIndex = jobIndexInput;
       // thisVarJobs.selectedJobObject affects the RIGHT SIDE of the webpage
-      thisVarJobs.selectedJobObject = thisVarJobs.jobs[jobIndexInput];
+      this.selectedJobObject = this.jobs[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
     };
 
@@ -110,7 +114,7 @@ var JobsController;
         console.log("Could not retreive JSON data!");
       });
     }
-    this.getJson(true);
+    // this.getJson(true);
 
     // Change the JSON file
     this.changeJsonContent = function(indexHead, indexTail){
@@ -145,11 +149,12 @@ var JobsController;
 
     this.testFn = function(){
       console.log("I am a success function from Jobs Controller");
-      console.log("testVar is " +thisVarJobs.testVar);
+      // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
+      thisVarJobs.selectJob(0);
     }
 
     this.testVar = [];
-    jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.testVar);
+    jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.jobs);
 
   }]); // Controller
 
