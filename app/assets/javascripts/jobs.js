@@ -9,12 +9,6 @@ var JobsController;
 
   app.service('jsonServices',['$http',function($http) {
 
-    this.defineThisVarPages = function(){};
-
-    this.sayHello = function() {
-      console.log("Hello, World!");
-    };
-
     this.getJson = function(successFunction,dataReceiver){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
@@ -25,7 +19,11 @@ var JobsController;
       }). // Success function
       error(function(data){
       });
-    }    
+    } // getJson function
+
+    this.myVar = 1;
+
+    console.log("hello from a service");
   }]); // app.service
 
   PagesController = app.controller("PagesController", function(){
@@ -155,6 +153,17 @@ var JobsController;
 
     this.testVar = [];
     jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.jobs);
+
+    this.returnMyVar = function(){
+      return jsonServices.myVar;
+    }
+
+    this.increaseMyVar = function(){
+      jsonServices.myVar++;
+      console.log("I got a variable from the service! " +jsonServices.myVar);
+    }
+
+    console.log("I got a variable from the service! " +jsonServices.myVar);
 
   }]); // Controller
 

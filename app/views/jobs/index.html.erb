@@ -27,6 +27,9 @@
   <!-- The right side of the screen -->
   <div class="col-md-6" id="single-job-view">
 
+    {{jobsCtrl.returnMyVar()}}
+    <button ng-click="jobsCtrl.increaseMyVar()">Increase myVar!!!</button>
+
     <h2>{{jobsCtrl.selectedJobObject.title}}</h2>
     <p class="content-meta">Created by {{jobsCtrl.selectedJobObject.user.first_name}} {{jobsCtrl.selectedJobObject.user.last_name}} on {{jobsCtrl.selectedJobObject.created_at.substring(0,10)}}</p>
     <p>{{jobsCtrl.selectedJobObject.body}}</p>
