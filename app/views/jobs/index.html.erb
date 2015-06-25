@@ -3,7 +3,7 @@
   <div class="col-md-6">
 
     <h1>Job Postings</h1>
-    <div ng-repeat="job in jobsCtrl.jobs">
+    <div ng-repeat="job in jobs">
       <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
       <span class="content-meta">Posted on {{job.created_at.substring(0,10)}}</span><p>
     </div>
@@ -29,6 +29,9 @@
 
     {{jobsCtrl.returnMyVar()}}
     <button ng-click="jobsCtrl.increaseMyVar()">Increase myVar!!!</button>
+
+    <p>
+    {{"hello ?"}}
 
     <h2>{{jobsCtrl.selectedJobObject.title}}</h2>
     <p class="content-meta">Created by {{jobsCtrl.selectedJobObject.user.first_name}} {{jobsCtrl.selectedJobObject.user.last_name}} on {{jobsCtrl.selectedJobObject.created_at.substring(0,10)}}</p>

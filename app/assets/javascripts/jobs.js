@@ -89,7 +89,8 @@ var JobsController;
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
     thisVarJobs = this;
-    this.jobs = [];
+    $scope.jobs = [];
+    $scope.myVarAgain = "foobar!!!";
     // This variable will contain the job selected via this.selectJob function
     this.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
@@ -121,13 +122,12 @@ var JobsController;
     
     this.populateJobs = function(){
       if (typeof jsonServices.data != "undefined" && jsonServices.data.length > 0) {
-        for (i = 0; i < jsonServices.data.length; i++) {
-          thisVarJobs.jobs.push(jsonServices.data[i]);
-        }
-        console.log("jsonServices.data = " +typeof jsonServices.data);
-        console.log("this.jobs = " +this.jobs);
-        console.log("thisVarJobs.jobs = " +thisVarJobs.jobs);
-        // console.log("type = " + jsonServices.data.length);
+        // for (i = 0; i < jsonServices.data.length; i++) {
+        //   $scope.jobs.push(jsonServices.data[i]);
+        // }
+        $scope.jobs = jsonServices.data;
+        console.log("$scope.jobs = " +$scope.jobs);
+        console.log("jsonServices.data = " +jsonServices.data);
       } else {
         setTimeout(this.populateJobs,500);
       }
@@ -185,8 +185,6 @@ var JobsController;
       jsonServices.myVar++;
       console.log("I got a variable from the service! " +jsonServices.myVar);
     }
-
-    console.log("I got a variable from the service! " +jsonServices.myVar);
 
   }]); // Controller
 
