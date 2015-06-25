@@ -5,21 +5,27 @@ var JobsController;
 
   var app = angular.module("Barterist", ['ng-rails-csrf']);
 
-  // JobsController = app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope) {
-
   app.service('jsonServices',['$http',function($http) {
+
+    thisVarJsonServices = this;
+    this.data = [];
 
     this.getJson = function(successFunction,dataReceiver){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
         for (i = 0; i < data.length; i++){
-          dataReceiver.push(data[i]);
+          thisVarJsonServices.data.push(data[i]);
         }
-        successFunction;
+        console.log("I am from jsonServices " +thisVarJsonServices.data.length);
+        // for (i = 0; i < data.length; i++){
+        //   dataReceiver.push(data[i]);
+        // }
+        // successFunction;
       }). // Success function
       error(function(data){
       });
     } // getJson function
+    this.getJson();
 
     this.myVar = 1;
 
@@ -112,7 +118,21 @@ var JobsController;
         console.log("Could not retreive JSON data!");
       });
     }
-    // this.getJson(true);
+    
+    this.populateJobs = function(){
+      if (typeof jsonServices.data != "undefined" && jsonServices.data.length > 0) {
+        for (i = 0; i < jsonServices.data.length; i++) {
+          thisVarJobs.jobs.push(jsonServices.data[i]);
+        }
+        console.log("jsonServices.data = " +typeof jsonServices.data);
+        console.log("this.jobs = " +this.jobs);
+        console.log("thisVarJobs.jobs = " +thisVarJobs.jobs);
+        // console.log("type = " + jsonServices.data.length);
+      } else {
+        setTimeout(this.populateJobs,500);
+      }
+    }
+    this.populateJobs();
 
     // Change the JSON file
     this.changeJsonContent = function(indexHead, indexTail){
@@ -145,6 +165,9 @@ var JobsController;
       return this.selectJob === jobIndexInput;
     }
 
+    // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
+    // //////////////////////////////////////////////////////
+
     this.testFn = function(){
       console.log("I am a success function from Jobs Controller");
       // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
@@ -152,7 +175,7 @@ var JobsController;
     }
 
     this.testVar = [];
-    jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.jobs);
+    // jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.jobs);
 
     this.returnMyVar = function(){
       return jsonServices.myVar;
