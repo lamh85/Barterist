@@ -10,6 +10,8 @@ var JobsController;
     thisVarJsonServices = this;
     this.data = [];
 
+    this.watched = "I am a string";
+
     this.getJson = function(successFunction,dataReceiver){
       // Select the job via index number from the array
       $http.get('/jobs.json').success(function(data){
@@ -95,6 +97,12 @@ var JobsController;
     this.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
     this.selectedJobIndex;
+
+    // Watch the change in the JSON data
+    this.watcher = jsonServices.watched;
+    this.$watch('watched', function() {
+      jsonServices.watched = this.watcher;
+    });
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
