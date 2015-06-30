@@ -7,7 +7,14 @@ var JobsController;
 
   app.service('jsonServices',['$http',function($http) {
 
+    this.myVar = 1;
     thisVarJsonServices = this;
+
+    this.increaseMyVar = function() {
+      thisVarJsonServices.myVar ++;
+      console.log("myVar = " +myVar);
+    }
+
     this.data = [];
 
     this.watched = "I am a string";
@@ -29,7 +36,6 @@ var JobsController;
     } // getJson function
     this.getJson();
 
-    this.myVar = 1;
 
     console.log("hello from a service");
   }]); // app.service
@@ -100,7 +106,7 @@ var JobsController;
 
     // Watch the change in the JSON data
     this.watcher = jsonServices.watched;
-    this.$watch('watcher', function() {
+    $scope.$watch('watcher', function() {
       jsonServices.watched = this.watcher;
     });
 
@@ -169,6 +175,8 @@ var JobsController;
     } // AJAX POST comment
 
     // A tester that checks if the inputted number is the currently selected job
+
+
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
     }
@@ -176,24 +184,20 @@ var JobsController;
     // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
     // //////////////////////////////////////////////////////
 
-    this.testFn = function(){
-      console.log("I am a success function from Jobs Controller");
-      // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
-      thisVarJobs.selectJob(0);
-    }
+    // this.watcher = jsonServices.watched;
+    // this.$watch('watcher', function() {
+    //   jsonServices.watched = this.watcher;
+    // });
 
-    this.testVar = [];
-    // jsonServices.getJson(thisVarJobs.testFn(),thisVarJobs.jobs);
-
-    this.returnMyVar = function(){
-      return jsonServices.myVar;
-    }
+    this.myVar = jsonServices.myVar;
+    $scope.$watch('myVar',function(){
+      jsonServices.myVar = this.myVar;
+    })
 
     this.increaseMyVar = function(){
-      jsonServices.myVar++;
-      console.log("I got a variable from the service! " +jsonServices.myVar);
+      jsonServices.increaseMyVar();
+      // console.log("I got a variable from the service! " +jsonServices.myVar);
     }
 
   }]); // Controller
-
 })();
