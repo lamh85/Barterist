@@ -100,7 +100,7 @@ var JobsController;
 
     // Watch the change in the JSON data
     this.watcher = jsonServices.watched;
-    this.$watch('watched', function() {
+    this.$watch('watcher', function() {
       jsonServices.watched = this.watcher;
     });
 
