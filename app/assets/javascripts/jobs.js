@@ -12,7 +12,7 @@ var JobsController;
 
     this.increaseMyVar = function() {
       thisVarJsonServices.myVar ++;
-      console.log("myVar = " +myVar);
+      console.log("myVar = " +this.myVar);
     }
 
     this.data = [];
@@ -105,9 +105,9 @@ var JobsController;
     this.selectedJobIndex;
 
     // Watch the change in the JSON data
-    this.watcher = jsonServices.watched;
-    $scope.$watch('watcher', function() {
-      jsonServices.watched = this.watcher;
+    $scope.jobs = jsonServices.data;
+    $scope.$watch('jobs', function() {
+      jsonServices.data = $scope.jobs;
     });
 
     // Set the content for the RIGHT side of the webpage
