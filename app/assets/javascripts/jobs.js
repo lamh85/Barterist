@@ -34,7 +34,7 @@ var JobsController;
       error(function(data){
       });
     } // getJson function
-    this.getJson();
+    // this.getJson();
 
 
     console.log("hello from a service");
@@ -180,6 +180,9 @@ var JobsController;
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
     }
+
+    // Tell jsonServices to run the function for fetching the JSON data.
+    jsonServices.getJson();
 
     // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
     // //////////////////////////////////////////////////////
