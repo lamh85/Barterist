@@ -7,8 +7,8 @@ var JobsController;
 
   app.service('jsonServices',['$http',function($http) {
 
-    this.myVar = 1;
     thisVarJsonServices = this;
+    this.myVar = 1;
 
     this.increaseMyVar = function() {
       thisVarJsonServices.myVar ++;
@@ -16,8 +16,7 @@ var JobsController;
     }
 
     this.data = [];
-
-    this.watched = "I am a string";
+    this.counter = 1;
 
     this.getJson = function(successFunction,dataReceiver){
       // Select the job via index number from the array
@@ -103,11 +102,20 @@ var JobsController;
     this.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
     this.selectedJobIndex;
+    $scope.counter = 1;
+
+    // Tell jsonServices to run the function for fetching the JSON data.
+    jsonServices.getJson();
 
     // Watch the change in the JSON data
-    $scope.jobs = jsonServices.data;
+    // $scope.jobs = jsonServices.data;
+    for (i = 0; i < jsonServices.data.length; i++) {
+      $scope.jobs.push(jsonServices.data[i]);
+    }
+
     $scope.$watch('jobs', function() {
       jsonServices.data = $scope.jobs;
+      console.log("$scope.jobs = " +typeof $scope.jobs);
     });
 
     // Set the content for the RIGHT side of the webpage
@@ -115,7 +123,7 @@ var JobsController;
       console.log("The selected job's index is: " +jobIndexInput);
       this.selectedJobIndex = jobIndexInput;
       // thisVarJobs.selectedJobObject affects the RIGHT SIDE of the webpage
-      this.selectedJobObject = this.jobs[jobIndexInput];
+      this.selectedJobObject = $scope.jobs[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
     };
 
@@ -180,9 +188,6 @@ var JobsController;
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
     }
-
-    // Tell jsonServices to run the function for fetching the JSON data.
-    jsonServices.getJson();
 
     // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
     // //////////////////////////////////////////////////////
