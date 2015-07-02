@@ -109,12 +109,15 @@ var JobsController;
 
     // Watch the change in the JSON data
     // $scope.jobs = jsonServices.data;
-    for (i = 0; i < jsonServices.data.length; i++) {
-      $scope.jobs.push(jsonServices.data[i]);
+    this.mapJobs = function(){
+      for (i = 0; i < jsonServices.data.length; i++) {
+        $scope.jobs.push(jsonServices.data[i]);
+      }
     }
 
     $scope.$watch('jobs', function() {
       jsonServices.data = $scope.jobs;
+      thisVarJobs.mapJobs();
       console.log("$scope.jobs = " +typeof $scope.jobs);
     });
 

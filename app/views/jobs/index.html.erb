@@ -4,7 +4,7 @@
 
     <h1>Job Postings</h1>
     <div ng-repeat="job in jobs">
-      <p ng-click="jobsCtrl.selectJob( jobsCtrl.jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
+      <p ng-click="jobsCtrl.selectJob( jobs.indexOf(job) )" class="job-list-item">{{job.title}} | 
       <span class="content-meta">Posted on {{job.created_at.substring(0,10)}}</span><p>
     </div>
 
