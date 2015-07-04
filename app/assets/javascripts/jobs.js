@@ -9,6 +9,7 @@ var JobsController;
 
     thisVarJsonServices = this;
     this.myVar = 1;
+    this.jsonRefreshCount = 0;
 
     this.increaseMyVar = function() {
       thisVarJsonServices.myVar ++;
@@ -24,11 +25,9 @@ var JobsController;
         for (i = 0; i < data.length; i++){
           thisVarJsonServices.data.push(data[i]);
         }
+        thisVarJsonServices.jsonRefreshCount ++;
         console.log("I am from jsonServices " +thisVarJsonServices.data.length);
-        // for (i = 0; i < data.length; i++){
-        //   dataReceiver.push(data[i]);
-        // }
-        // successFunction;
+        console.log("thisVarJsonServices.jsonRefreshCount " +thisVarJsonServices.jsonRefreshCount);
       }). // Success function
       error(function(data){
       });
@@ -96,9 +95,8 @@ var JobsController;
 
     // Store the value of "this" into a variable so it can be used in the $http.get function, AND in the $http.post function
     thisVarJobs = this;
-    this.firstRun = true;
+    $scope.jsonRefreshCount = jsonServices.jsonRefreshCount;
     $scope.jobs = [];
-    $scope.myVarAgain = {};
     // This variable will contain the job selected via this.selectJob function
     this.selectedJobObject = false;
     // This variable keeps the selected job's index persisting when the user submits a comment
@@ -108,16 +106,10 @@ var JobsController;
     // Tell jsonServices to run the function for fetching the JSON data.
     jsonServices.getJson();
 
-    // Watch the change in the JSON data
-    // $scope.jobs = jsonServices.data;
-    this.initializeSelectedJob = function(){
-      // for (i = 0; i < jsonServices.data.length; i++) {
-      //   $scope.jobs.push(jsonServices.data[i]);
-      // }
-      this.selectedJobObject = $scope.jobs[0];
-      this.firstRun = false;
-      console.log("hello galaxy");
-    }
+    $scope.$watch(function () { return thisVarJsonServices.data }, function () {
+      $scope.jobs = thisVarJsonServices.data;
+      console.log("updated via $watch function!!!");
+    });
 
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
@@ -127,15 +119,6 @@ var JobsController;
       this.selectedJobObject = $scope.jobs[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
     };
-
-    $scope.$watch('jobs', function() {
-      jsonServices.data = $scope.jobs;
-      if (this.firstRun === true) {
-        thisVarJobs.selectJob(0);
-        this.firstRun = false;
-      }
-      console.log("$scope.jobs = " +typeof $scope.jobs);
-    });
 
     // Store the JSON data into the array of jobs.
     this.getJson = function(firstTime){
@@ -202,20 +185,16 @@ var JobsController;
     // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
     // //////////////////////////////////////////////////////
 
-    // this.watcher = jsonServices.watched;
-    // this.$watch('watcher', function() {
-    //   jsonServices.watched = this.watcher;
-    // });
-
-    this.myVar = jsonServices.myVar;
-    $scope.$watch('myVar',function(){
-      jsonServices.myVar = this.myVar;
-    })
-
     this.increaseMyVar = function(){
       jsonServices.increaseMyVar();
       // console.log("I got a variable from the service! " +jsonServices.myVar);
     }
+
+    $scope.myVar;
+
+    $scope.$watch(function () { return thisVarJsonServices.myVar }, function () {
+      $scope.myVar = thisVarJsonServices.myVar;
+    });
 
   }]); // Controller
 })();
