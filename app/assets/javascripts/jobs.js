@@ -106,11 +106,13 @@ var JobsController;
     // Tell jsonServices to run the function for fetching the JSON data.
     jsonServices.getJson();
 
-    $scope.$watch(function () { return thisVarJsonServices.data }, function () {
+    // Update the controller's JSON data whenever the service's updates
+    $scope.$watch(thisVarJsonServices.data, function () {
       $scope.jobs = thisVarJsonServices.data;
       console.log("updated via $watch function!!!");
     });
 
+    // Select the job
     // Set the content for the RIGHT side of the webpage
     this.selectJob = function(jobIndexInput) {
       console.log("The selected job's index is: " +jobIndexInput);
@@ -119,47 +121,6 @@ var JobsController;
       this.selectedJobObject = $scope.jobs[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
     };
-
-    // Store the JSON data into the array of jobs.
-    this.getJson = function(firstTime){
-      // Select the job via index number from the array
-      $http.get('/jobs.json').success(function(data){
-        thisVarJobs.jobs = data;
-        thisVarPages.jobsDbLength = thisVarJobs.jobs[0].jobs_length;
-        thisVarPages.makePageNumbers();
-        // If this function is executed because the user landed on the index.html page, then set the selected job to 0;
-        (firstTime == true) && (thisVarJobs.selectJob(0));
-      }). // Success function
-      error(function(data){
-        console.log("Could not retreive JSON data!");
-      });
-    }
-    
-    this.populateJobs = function(){
-      if (typeof jsonServices.data != "undefined" && jsonServices.data.length > 0) {
-        // for (i = 0; i < jsonServices.data.length; i++) {
-        //   $scope.jobs.push(jsonServices.data[i]);
-        // }
-        $scope.jobs = jsonServices.data;
-        console.log("$scope.jobs = " +$scope.jobs);
-        console.log("jsonServices.data = " +jsonServices.data);
-      } else {
-        setTimeout(this.populateJobs,500);
-      }
-    }
-    this.populateJobs();
-
-    // Change the JSON file
-    this.changeJsonContent = function(indexHead, indexTail){
-      $http.get(
-        '/change_page?index_head=' +indexHead+
-        '&index_tail=' +indexTail
-      ).success(function(data){
-        thisVarJobs.getJson(false);
-      }).error(function(data){
-        console.log("Could not GET JSON");
-      });
-    }
 
     // AJAX POST comment
     this.postComment = function() {
@@ -174,9 +135,6 @@ var JobsController;
         thisVarJobs.changeJsonContent(this.jobsDbIndexHead, this.jobsDbIndexTail);
       });
     } // AJAX POST comment
-
-    // A tester that checks if the inputted number is the currently selected job
-
 
     this.isSelected = function(jobIndexInput) {
       return this.selectJob === jobIndexInput;
