@@ -9,7 +9,6 @@ var JobsController;
 
     thisVarJsonServices = this;
     this.myVar = 1;
-    this.jsonRefreshCount = 0;
 
     this.increaseMyVar = function() {
       thisVarJsonServices.myVar ++;
@@ -25,7 +24,6 @@ var JobsController;
         for (i = 0; i < data.length; i++){
           thisVarJsonServices.data.push(data[i]);
         }
-        thisVarJsonServices.jsonRefreshCount ++;
         console.log("I am from jsonServices " +thisVarJsonServices.data.length);
         console.log("thisVarJsonServices.jsonRefreshCount " +thisVarJsonServices.jsonRefreshCount);
       }). // Success function
@@ -38,11 +36,13 @@ var JobsController;
     console.log("hello from a service");
   }]); // app.service
 
-  PagesController = app.controller("PagesController", function(){
+// app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope)
+  PagesController = app.controller("PagesController", ['jsonServices','$scope', function(jsonServices, $scope){
     thisVarPages = this;
     // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
     // ///////////////
-    this.jobsDbLength;
+    $scope.jobs = [];
+    $scope.jobsDbLength = $scope.jobs.length;
     // Variables needed for selecting a page:
     this.pageSelected = 1;
     this.jobsDbIndexHead = 0;
@@ -71,7 +71,7 @@ var JobsController;
 
     // Populate the array of page numbers
     this.makePageNumbers = function(){
-      for (i = 0; i < Math.ceil(this.jobsDbLength / this.jobsPerPage); i++) {
+      for (i = 0; i < Math.ceil($scope.jobsDbLength / this.jobsPerPage); i++) {
         this.pageNumbers.push(i+1);
       }
       this.makePagePrevNext();
@@ -89,7 +89,15 @@ var JobsController;
       }
     }
 
-  });
+    // Update the controller's JSON data whenever the service's updates
+    $scope.$watch(jsonServices.data, function () {
+      $scope.jobs = thisVarJsonServices.data;
+      // $scope.jobsDbLength = $scope.jobs.length;
+      console.log("hellooo!!!" +thisVarJsonServices.data);
+      thisVarPages.makePageNumbers();
+    });
+
+  }]); // End the Pages Controller
 
   JobsController = app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope) {
 
@@ -107,9 +115,9 @@ var JobsController;
     jsonServices.getJson();
 
     // Update the controller's JSON data whenever the service's updates
-    $scope.$watch(thisVarJsonServices.data, function () {
+    $scope.$watch( function(){return jsonServices.data}, function () {
       $scope.jobs = thisVarJsonServices.data;
-      console.log("updated via $watch function!!!");
+      console.log("updated via $watch function!!!" +thisVarJsonServices.data);
     });
 
     // Select the job
