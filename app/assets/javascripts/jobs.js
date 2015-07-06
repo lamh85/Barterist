@@ -36,13 +36,11 @@ var JobsController;
     console.log("hello from a service");
   }]); // app.service
 
-// app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope)
   PagesController = app.controller("PagesController", ['jsonServices','$scope', function(jsonServices, $scope){
     thisVarPages = this;
-    // Variables for pagination. Except for this.jobsDbLength, ALL of the following should be user-selected.
+    // Variables for pagination.
     // ///////////////
-    $scope.jobs = [];
-    $scope.jobsDbLength = $scope.jobs.length;
+    $scope.jobsPages = [];
     // Variables needed for selecting a page:
     this.pageSelected = 1;
     this.jobsDbIndexHead = 0;
@@ -71,9 +69,11 @@ var JobsController;
 
     // Populate the array of page numbers
     this.makePageNumbers = function(){
-      for (i = 0; i < Math.ceil($scope.jobsDbLength / this.jobsPerPage); i++) {
+      for (i = 0; i < Math.ceil(($scope.jobsPages).length / this.jobsPerPage); i++) {
         this.pageNumbers.push(i+1);
+        console.log("checkpoint");
       }
+      console.log("function fired: makePageNumbers " +$scope.jobsPages);
       this.makePagePrevNext();
     }
 
@@ -91,10 +91,10 @@ var JobsController;
 
     // Update the controller's JSON data whenever the service's updates
     $scope.$watch(jsonServices.data, function () {
-      $scope.jobs = thisVarJsonServices.data;
-      // $scope.jobsDbLength = $scope.jobs.length;
-      console.log("hellooo!!!" +thisVarJsonServices.data);
-      thisVarPages.makePageNumbers();
+      if (jsonServices.data.length > 0) {
+        $scope.jobsPages = thisVarJsonServices.data;
+        thisVarPages.makePageNumbers();
+      }
     });
 
   }]); // End the Pages Controller
@@ -117,7 +117,7 @@ var JobsController;
     // Update the controller's JSON data whenever the service's updates
     $scope.$watch( function(){return jsonServices.data}, function () {
       $scope.jobs = thisVarJsonServices.data;
-      console.log("updated via $watch function!!!" +thisVarJsonServices.data);
+      console.log("jsonServices.data = " +JSON.stringify(thisVarJsonServices.data));
     });
 
     // Select the job
