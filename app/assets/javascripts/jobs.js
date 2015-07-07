@@ -16,6 +16,7 @@ var JobsController;
     }
 
     this.data = [];
+    this.dataLength = 0;
     this.counter = 1;
 
     this.getJson = function(successFunction,dataReceiver){
@@ -23,6 +24,9 @@ var JobsController;
       $http.get('/jobs.json').success(function(data){
         for (i = 0; i < data.length; i++){
           thisVarJsonServices.data.push(data[i]);
+          if (i == (data.length - 1) ) {
+            thisVarJsonServices.dataLength = i + 1;
+          }
         }
         console.log("I am from jsonServices " +thisVarJsonServices.data.length);
         console.log("thisVarJsonServices.jsonRefreshCount " +thisVarJsonServices.jsonRefreshCount);
@@ -41,6 +45,7 @@ var JobsController;
     // Variables for pagination.
     // ///////////////
     $scope.jobsPages = [];
+    $scope.jobsLength = 0;
     // Variables needed for selecting a page:
     this.pageSelected = 1;
     this.jobsDbIndexHead = 0;
@@ -90,11 +95,10 @@ var JobsController;
     }
 
     // Update the controller's JSON data whenever the service's updates
-    $scope.$watch(jsonServices.data, function () {
-      if (jsonServices.data.length > 0) {
-        $scope.jobsPages = thisVarJsonServices.data;
-        thisVarPages.makePageNumbers();
-      }
+    $scope.$watch(jsonServices.dataLength, function () {
+      $scope.jobsLength = thisVarJsonServices.dataLength;
+      // console.log("pages length = " +thisVarJsonServices.dataLength);
+      // console.log("pages length = " +$scope.jobsLength);
     });
 
   }]); // End the Pages Controller
