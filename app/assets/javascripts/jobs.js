@@ -56,6 +56,12 @@ var JobsController;
     this.pageNumberNext = 2;
     this.jobsPerPage = 10;
 
+    $scope.$watch( function(){return jsonServices.data}, function () {
+      $scope.jobsPages = thisVarJsonServices.data;
+      console.log("I am from Pages controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobsPages));
+    });
+
+
     this.pageSelectedIsFirst = function() {
       return this.pageSelected == 1;
     }
@@ -94,13 +100,6 @@ var JobsController;
       }
     }
 
-    // Update the controller's JSON data whenever the service's updates
-    $scope.$watch(jsonServices.dataLength, function () {
-      $scope.jobsLength = thisVarJsonServices.dataLength;
-      // console.log("pages length = " +thisVarJsonServices.dataLength);
-      // console.log("pages length = " +$scope.jobsLength);
-    });
-
   }]); // End the Pages Controller
 
   JobsController = app.controller("JobsController", ['$http','jsonServices','$scope', function($http,jsonServices,$scope) {
@@ -121,7 +120,7 @@ var JobsController;
     // Update the controller's JSON data whenever the service's updates
     $scope.$watch( function(){return jsonServices.data}, function () {
       $scope.jobs = thisVarJsonServices.data;
-      console.log("jsonServices.data = " +JSON.stringify(thisVarJsonServices.data));
+      console.log("I am from Jobs controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobs));
     });
 
     // Select the job
