@@ -108,40 +108,47 @@ var JobsController;
     thisVarJobs = this;
     $scope.jsonRefreshCount = jsonServices.jsonRefreshCount;
     $scope.jobs = [];
-    // This variable will contain the job selected via this.selectJob function
-    this.selectedJobObject = false;
+    // This variable will contain the job selected via $scope.selectJob function
+    $scope.selectedJobObject = false;
     // This variable keeps the selected job's index persisting when the user submits a comment
-    this.selectedJobIndex;
+    $scope.selectedJobIndex = null;
     $scope.counter = 1;
 
     // Tell jsonServices to run the function for fetching the JSON data.
     jsonServices.getJson();
 
+    // Select the job
+    // Set the content for the RIGHT side of the webpage
+    $scope.selectJob = function(jobIndexInput) {
+      console.log("The selected job's index is: " +jobIndexInput);
+      $scope.selectedJobIndex = jobIndexInput;
+      // thisVar$scope.selectedJobObject affects the RIGHT SIDE of the webpage
+      $scope.selectedJobObject = $scope.jobs[jobIndexInput];
+      $('#comment_user_id').attr('value', jobIndexInput);
+    };
+
     // Update the controller's JSON data whenever the service's updates
-    $scope.$watch( function(){return jsonServices.data}, function () {
+    $scope.$watch( function(){return jsonServices.data}, function(){
       $scope.jobs = thisVarJsonServices.data;
       console.log("I am from Jobs controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobs));
-      if (selectedJobIndex == null) {
-        thisVarJobs.selectJob(0);
+      if ($scope.selectedJobObject == false) {
+        $scope.selectJob(0);
       }
     });
 
-    // Select the job
-    // Set the content for the RIGHT side of the webpage
-    this.selectJob = function(jobIndexInput) {
-      console.log("The selected job's index is: " +jobIndexInput);
-      this.selectedJobIndex = jobIndexInput;
-      // thisVarJobs.selectedJobObject affects the RIGHT SIDE of the webpage
-      this.selectedJobObject = $scope.jobs[jobIndexInput];
-      $('#comment_user_id').attr('value', jobIndexInput);
-    };
+    $scope.$watch( function(){return $scope.jobs}, function(){
+      if ($scope.jobs.length > 0 && $scope.selectedJobIndex == null) {
+        $scope.selectJob(0);
+      }
+      console.log("hello from watch function" +$scope.jobs);
+    });
 
     // AJAX POST comment
     this.postComment = function() {
       var postDataObject = {
         title: $('#comment_title').val(),
         body: $('#comment_body').val(),
-        job_id: this.selectedJobObject.id
+        job_id: $scope.selectedJobObject.id
       }
 
       $http.post('/comments', postDataObject).success(function(){
@@ -151,7 +158,7 @@ var JobsController;
     } // AJAX POST comment
 
     this.isSelected = function(jobIndexInput) {
-      return this.selectJob === jobIndexInput;
+      return $scope.selectJob === jobIndexInput;
     }
 
     // THESE ARE TEST COMMUNICATIONS WITH THE ANGULAR SERVICE
