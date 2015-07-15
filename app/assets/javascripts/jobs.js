@@ -121,6 +121,9 @@ var JobsController;
     $scope.$watch( function(){return jsonServices.data}, function () {
       $scope.jobs = thisVarJsonServices.data;
       console.log("I am from Jobs controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobs));
+      if (selectedJobIndex == null) {
+        thisVarJobs.selectJob(0);
+      }
     });
 
     // Select the job
