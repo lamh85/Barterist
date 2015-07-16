@@ -109,7 +109,7 @@ var JobsController;
     $scope.jsonRefreshCount = jsonServices.jsonRefreshCount;
     $scope.jobs = [];
     // This variable will contain the job selected via $scope.selectJob function
-    $scope.selectedJobObject = false;
+    $scope.selectedJobObject = {};
     // This variable keeps the selected job's index persisting when the user submits a comment
     $scope.selectedJobIndex = null;
     $scope.counter = 1;
@@ -122,25 +122,24 @@ var JobsController;
     $scope.selectJob = function(jobIndexInput) {
       console.log("The selected job's index is: " +jobIndexInput);
       $scope.selectedJobIndex = jobIndexInput;
-      // thisVar$scope.selectedJobObject affects the RIGHT SIDE of the webpage
-      $scope.selectedJobObject = $scope.jobs[jobIndexInput];
+      $scope.selectedJobObject = jsonServices.data[jobIndexInput];
       $('#comment_user_id').attr('value', jobIndexInput);
+      console.log("selectJob function fired");
     };
 
     // Update the controller's JSON data whenever the service's updates
     $scope.$watch( function(){return jsonServices.data}, function(){
       $scope.jobs = thisVarJsonServices.data;
-      console.log("I am from Jobs controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobs));
-      if ($scope.selectedJobObject == false) {
-        $scope.selectJob(0);
-      }
+      $scope.counter++;
+      console.log("I am from Jobs controller's $watch function. Here is the data in the controller:" +JSON.stringify($scope.jobs.length));
     });
 
-    $scope.$watch( function(){return $scope.jobs}, function(){
-      if ($scope.jobs.length > 0 && $scope.selectedJobIndex == null) {
+    $scope.$watch( function(){return $scope.counter}, function(){
+      // if ($scope.selectedJobObject == {}) {
+        console.log("going to fire the selectJob function now...");
         $scope.selectJob(0);
-      }
-      console.log("hello from watch function" +$scope.jobs);
+      // }
+      // console.log("hello from watch function" +$scope.jobs);
     });
 
     // AJAX POST comment
